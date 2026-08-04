@@ -1,0 +1,280 @@
+/* ─── RESET & BASE ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:       #fdf8f4;
+      --ink:      #2b2019;
+      --muted:    #9c8778;
+      --rose:     #c97b6e;
+      --rose-lt:  #f0cfc9;
+      --card:     #ffffff;
+      --radius:   14px;
+      --serif:    'Cormorant Garamond', Georgia, serif;
+      --sans:     'DM Sans', system-ui, sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow: hidden;
+    }
+
+    /* ─── PAGES ─── */
+    .page {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(18px);
+    }
+    .page.active {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .page.exit {
+      opacity: 0;
+      transform: translateY(-18px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 28px rgba(43,32,25,0.08);
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      text-align: center;
+    }
+
+    /* ─── TYPOGRAPHY ─── */
+    .label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(32px, 7vw, 46px);
+      font-weight: 300;
+      line-height: 1.18;
+      color: var(--ink);
+    }
+    h1 em { font-style: italic; color: var(--rose); }
+    p {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 340px;
+    }
+
+    /* ─── GIF FRAME ─── */
+    .gif-frame {
+      width: 100%;
+      max-width: 340px;
+      aspect-ratio: 16 / 10;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--rose-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .gif-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* placeholder when no GIF set */
+    .gif-frame .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--rose);
+      font-size: 13px;
+      font-family: var(--sans);
+      opacity: 0.7;
+    }
+    .gif-frame .placeholder svg { width: 32px; height: 32px; }
+
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 48px;
+      padding: 0 28px;
+      border-radius: 999px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--rose);
+      color: #fff;
+      border-color: var(--rose);
+    }
+    .btn-primary:hover { background: #b86b5e; border-color: #b86b5e; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: #e0d5cc;
+    }
+    .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ─── NO button dodge ─── */
+    #no-btn {
+      position: relative;
+      transition: top 0.15s, left 0.15s, color 0.2s, border-color 0.2s;
+    }
+
+    /* ─── DOTS ─── */
+    .dots {
+      display: flex;
+      gap: 7px;
+      margin-top: 4px;
+    }
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--rose-lt);
+      transition: background 0.3s;
+    }
+    .dot.active { background: var(--rose); }
+
+    /* ─── YES page ─── */
+    .confetti-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .confetti-wrap span {
+      position: absolute;
+      top: -20px;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ─── STEP COUNTER ─── */
+    .step-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── EDIT PANEL (GIF customizer) ─── */
+    .edit-hint {
+      font-size: 11px;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+    }
+    .edit-hint:hover { color: var(--rose); }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(43,32,25,0.35);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 8px 40px rgba(43,32,25,0.14);
+    }
+    .modal h2 {
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 300;
+    }
+    .modal label {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+    .modal input, .modal textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid #e0d5cc;
+      border-radius: 8px;
+      padding: 10px 13px;
+      font-family: var(--sans);
+      font-size: 14px;
+      color: var(--ink);
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+    .modal input:focus, .modal textarea:focus { border-color: var(--rose); }
+    .modal-row { display: flex; gap: 10px; justify-content: flex-end; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 480px) {
+      .card { padding: 30px 22px; gap: 18px; }
+      h1 { font-size: 30px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .page, .confetti-wrap span { transition: none; animation: none; }
+    }
