@@ -69,6 +69,9 @@
     #no-btn {
       transition: left 0.25s ease, top 0.25s ease;
     }
+    #yes-btn {
+      transition: transform 0.25s ease, font-size 0.25s ease, padding 0.25s ease;
+    }
   </style>
 </head>
 <body>
@@ -152,15 +155,15 @@
   <div class="card">
     <span class="label">The question</span>
 
-    <h1 id="ask-heading">Can I ask you out on a <em>date</em>?</h1>
+    <h1 id="ask-heading">Will you go on a <em>date</em> with me?</h1>
 
     <div class="dots">
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
     </div>
 
     <div class="btn-row" style="position:relative; width:100%; justify-content:center;">
-      <button class="btn btn-primary" onclick="goTo('page-choices')">Yes! 🌸</button>
-      <button class="btn btn-ghost" id="no-btn" onclick="dodgeNo()">No :(</button>
+      <button class="btn btn-primary" id="yes-btn" onclick="goTo('page-choices')">Yes! 🌸</button>
+      <button class="btn btn-ghost" id="no-btn" onclick="growYes()">No</button>
     </div>
   </div>
 </div>
@@ -290,17 +293,17 @@ function goTo(id) {
 /* ─────────────────────────────────────────────
    NO-BUTTON DODGE
 ───────────────────────────────────────────── */
-function dodgeNo() {
-  const btn = document.getElementById('no-btn');
-  const parent = btn.parentElement;
-  const pw = parent.offsetWidth;
-  const ph = parent.offsetHeight || 60;
-  const maxX = pw  - btn.offsetWidth  - 10;
-  const rx = Math.floor(Math.random() * maxX) - maxX / 2;
-  const ry = Math.floor(Math.random() * 40) - 20;
-  btn.style.position = 'relative';
-  btn.style.left = rx + 'px';
-  btn.style.top  = ry + 'px';
+let yesGrowCount = 0;
+const MAX_YES_GROWS = 12;
+const YES_GROW_STEP = 0.08; // scale increase per "No" click
+
+function growYes() {
+  if (yesGrowCount >= MAX_YES_GROWS) return; // stop growing after 20 tries
+
+  yesGrowCount++;
+  const yesBtn = document.getElementById('yes-btn');
+  const scale = 1 + yesGrowCount * YES_GROW_STEP;
+  yesBtn.style.transform = `scale(${scale})`;
 }
 
 /* ─────────────────────────────────────────────
